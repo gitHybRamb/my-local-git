@@ -1,7 +1,11 @@
-name: test-wf-manual
+name: create_mongodb_user
 # Controls when the workflow will run
 on:
   workflow_dispatch:
+    inputs:
+      app_name:
+        description: Application Name (like 'hc-abc')
+        required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -24,4 +28,4 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-          env | sort
+          echo ${{ github.event.inputs.app_name }}
