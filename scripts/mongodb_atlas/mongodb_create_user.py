@@ -2,8 +2,10 @@ import argparse
 import json
 import logging
 import requests
-import sys
+import os,sys
 import time
+import uuid
+
 
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s][%(funcName)s] %(message)s")
 
@@ -19,8 +21,11 @@ class MongodbUser:
 
     def create_user(self):
         """create_user"""
+        fh = open(os.environ['GITHUB_OUTPUT'], 'a')
         print("Create user module...")
         print("User name", self.user_name)
+        fh.write("inside...User name: " + self.user_name + "\n")
+        fh.close()
 
 
 def get_args():
@@ -33,6 +38,11 @@ def get_args():
     parser.add_argument("--user_password", required=True, help="User Password")
     args = parser.parse_args()
     return args
+
+
+def set_output(msg):
+    with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+        print(f'{msg}', file=fh)
 
 
 def main():
