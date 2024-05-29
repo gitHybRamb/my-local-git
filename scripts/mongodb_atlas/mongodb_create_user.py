@@ -37,7 +37,7 @@ def get_args():
 
 def main():
     args = get_args()
-    ma = MongodbUser(args.env)
+    ma = MongodbUser(args)
 
 if __name__ == "__main__":
     main()
