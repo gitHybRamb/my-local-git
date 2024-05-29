@@ -17,9 +17,10 @@ class MongodbUser:
         self.user_password = env.user_password
         self.user_role = env.user_role
 
-    def create_user(self, project_name: str):
+    def create_user(self):
         """create_user"""
         print("Create user module...")
+        print("User name", self.user_name)
 
 
 def get_args():
