@@ -6,7 +6,25 @@ on:
       app_name:
         description: Application Name (like 'hc-abc')
         required: true
-
+      env_name:
+        description: Environment Name (like 'dev, stage, prod')
+        required: true
+      db_name:
+        description: Database Name (alphanumeric with _ only, casesensitive)
+        required: true
+      user_name:
+        description: User Name (alphanumeric with _ only, casesensitive)
+        required: true
+      user_password:
+        description: User Password (alphanumeric with upper, lower and !~-_ only, casesensitive)
+        required: true
+      user_role:
+          description: User Role
+          required: true 
+          type: choice
+          options:
+            - readWrite
+            - read
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -26,6 +44,5 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-          echo ${{ github.event.inputs.app_name }}
+          echo App Name ${{ github.event.inputs.app_name }}
+          echo App Name ${{ github.event.inputs.user_role }}
