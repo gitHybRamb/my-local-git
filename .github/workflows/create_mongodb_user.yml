@@ -25,9 +25,6 @@ on:
             - readWrite
             - read
   push:
-    branches:
-      - develop
-      - feature/*
     paths:
       - ".github/workflows/*mongodb*"
       - "scripts/mongodb_atlas/**"
@@ -40,8 +37,8 @@ jobs:
       - name: Create MongoDB User Workflow
         run: |
           echo App Name ${{ github.event.inputs.app_name }}
-          echo App Name ${{ github.event.inputs.user_name }}
-          echo App Name ${{ github.event.inputs.user_role }}
+          echo User Name ${{ github.event.inputs.user_name }}
+          echo Role Name ${{ github.event.inputs.user_role }}
           python scripts/mongodb_atlas/mongodb_create_user.py \
           --app_name "${{ github.event.inputs.app_name }}" \
           --db_name "${{ github.event.inputs.db_name }}" \
