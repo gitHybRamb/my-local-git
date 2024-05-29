@@ -24,6 +24,14 @@ on:
           options:
             - readWrite
             - read
+  push:
+    branches:
+      - develop
+      - feature/*
+    paths:
+      - ".github/workflows/*mongodb*"
+      - "scripts/mongodb_atlas/**"
+          
 jobs:
   workflow_dispatch:
     runs-on: self-hosted
