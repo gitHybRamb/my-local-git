@@ -42,7 +42,7 @@ jobs:
           echo App Name ${{ github.event.inputs.app_name }}
           echo App Name ${{ github.event.inputs.user_name }}
           echo App Name ${{ github.event.inputs.user_role }}
-          python tools/mongodb_create_user.py \
+          python scripts/mongodb_atlas/mongodb_create_user.py \
           --app_name "${{ github.event.inputs.app_name }}" \
           --db_name "${{ github.event.inputs.db_name }}" \
           --env_name "${{ github.event.inputs.env_name }}" \
