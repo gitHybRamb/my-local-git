@@ -40,4 +40,5 @@ jobs:
       - name: Create MongoDB User Workflow
         run: |
           echo App Name ${{ github.event.inputs.app_name }}
+          echo App Name ${{ github.event.inputs.user_name }}
           echo App Name ${{ github.event.inputs.user_role }}
