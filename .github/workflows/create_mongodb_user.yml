@@ -24,10 +24,6 @@ on:
           options:
             - readWrite
             - read
-  push:
-    paths:
-      - ".github/workflows/*mongodb*"
-      - "scripts/mongodb_atlas/**"
           
 jobs:
   workflow_dispatch:
@@ -39,6 +35,7 @@ jobs:
           echo App Name ${{ github.event.inputs.app_name }}
           echo User Name ${{ github.event.inputs.user_name }}
           echo Role Name ${{ github.event.inputs.user_role }}
+          python -m pip install requests
           python scripts/mongodb_atlas/mongodb_create_user.py \
           --app_name "${{ github.event.inputs.app_name }}" \
           --db_name "${{ github.event.inputs.db_name }}" \
