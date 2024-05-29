@@ -37,8 +37,6 @@ def get_args():
 
 def main():
     args = get_args()
-    if args.debug:
-        logging.getLogger().setLevel(logging.DEBUG)
     ma = MongodbUser(args.env)
 
 if __name__ == "__main__":
