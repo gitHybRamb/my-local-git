@@ -1,0 +1,9 @@
+.DS_Store
+*.terraform/
+*.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+.secrets.env
+*hc_*_plan
+*kubeconfig_*
+*.zip
