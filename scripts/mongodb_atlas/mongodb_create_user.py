@@ -6,7 +6,6 @@ import os,sys
 import time
 import uuid
 
-
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s][%(funcName)s] %(message)s")
 
 class MongodbUser:
@@ -21,12 +20,9 @@ class MongodbUser:
 
     def create_user(self):
         """create_user"""
-        fh = open(os.environ['GITHUB_OUTPUT'], 'a')
         print("Create user module...")
         print("User name", self.user_name)
-        fh.write("inside...User name: " + self.user_name + "\n")
-        fh.close()
-
+        logging.info(f"User Name: {self.user_name} .. created")
 
 def get_args():
     parser = argparse.ArgumentParser(description="MongoDB Atlas User Creation Workflow")
