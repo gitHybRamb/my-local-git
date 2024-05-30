@@ -43,4 +43,5 @@ jobs:
            --user_name "${{ github.event.inputs.user_name }}" \
            --user_password "${{ github.event.inputs.user_password }}" \
            --user_role "${{ github.event.inputs.user_role }}"
+           echo User created..
 
