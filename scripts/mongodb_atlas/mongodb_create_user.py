@@ -43,7 +43,7 @@ def set_output(msg):
 
 def main():
     args = get_args()
-    ma = MongodbUser(args)
+    ma = MongodbUser(args).create_user()
 
 if __name__ == "__main__":
     main()

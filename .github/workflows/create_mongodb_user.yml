@@ -36,33 +36,12 @@ jobs:
           echo App Name ${{ github.event.inputs.app_name }}
           echo User Name ${{ github.event.inputs.user_name }}
           echo Role Name ${{ github.event.inputs.user_role }}
-          python <<EOF >>
-           scripts/mongodb_atlas/mongodb_create_user.py 
-           --app_name ${{ github.event.inputs.app_name }} 
-           --db_name ${{ github.event.inputs.db_name }} 
-           --env_name ${{ github.event.inputs.env_name }} 
-           --user_name ${{ github.event.inputs.user_name }} 
-           --user_password ${{ github.event.inputs.user_password }} 
+          python scripts/mongodb_atlas/mongodb_create_user.py \
+           --app_name ${{ github.event.inputs.app_name }} \
+           --db_name ${{ github.event.inputs.db_name }} \
+           --env_name ${{ github.event.inputs.env_name }} \ 
+           --user_name ${{ github.event.inputs.user_name }} \ 
+           --user_password ${{ github.event.inputs.user_password }} \ 
            --user_role ${{ github.event.inputs.user_role }} 
-          EOF
-          )
-          echo "MY_STRING<<EOF" >> $GITHUB_ENV
-          echo "$MY_STRING" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-      - name: Display result
-        run: |
-          echo "The string is: ${{ env.MY_STRING }}"
-  test_strings:
-    name: test strings
-    runs-on: self-hosted
-    steps:
-      - name: create string
-        run: |
-          MY_STRING="hello world mcmp"
-          echo "::set-output name=content::$MY_STRING"
-        id: my_string
-      - name: display string
-        run: |
-          echo "The string is: ${{ steps.my_string.outputs.content }}"
-
+           echo User created...
 
