@@ -46,5 +46,7 @@ jobs:
           --user_password ${{ github.event.inputs.user_password }} \
           --user_role ${{ github.event.inputs.user_role }} 
           )"
-          echo User created.. "${{ steps.mongodb_user.outputs.USER_OUTPUT }}"
+      - name: Display result
+        run: |
+          echo Result after user creation.. "${{ steps.mongodb_user.outputs.USER_OUTPUT }}"
 
