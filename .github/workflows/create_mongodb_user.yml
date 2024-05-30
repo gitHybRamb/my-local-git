@@ -36,7 +36,7 @@ jobs:
           echo App Name ${{ github.event.inputs.app_name }}
           echo User Name ${{ github.event.inputs.user_name }}
           echo Role Name ${{ github.event.inputs.user_role }}
-          MY_STRING=$(python <<EOF
+          python <<EOF >>
            scripts/mongodb_atlas/mongodb_create_user.py 
            --app_name ${{ github.event.inputs.app_name }} 
            --db_name ${{ github.event.inputs.db_name }} 
@@ -52,5 +52,17 @@ jobs:
       - name: Display result
         run: |
           echo "The string is: ${{ env.MY_STRING }}"
+  test_strings:
+    name: test strings
+    runs-on: ubuntu-latest
+    steps:
+      - name: create string
+        run: |
+          MY_STRING="hello world mcmp"
+          echo "::set-output name=content::$MY_STRING"
+        id: my_string
+      - name: display string
+        run: |
+          echo "The string is: ${{ steps.my_string.outputs.content }}"
 
 
