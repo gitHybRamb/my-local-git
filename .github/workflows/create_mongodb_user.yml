@@ -36,6 +36,8 @@ jobs:
           echo App Name ${{ github.event.inputs.app_name }}
           echo User Name ${{ github.event.inputs.user_name }}
           echo Role Name ${{ github.event.inputs.user_role }}
+          MY_STRING="hello world"
+          echo "::set-output name=content::$MY_STRING"
           #python -m pip install requests
           echo "::set-output name=USER_OUTPUT::$(
           python scripts/mongodb_atlas/mongodb_create_user.py \
@@ -48,5 +50,7 @@ jobs:
           )"
       - name: Display result
         run: |
-          echo Result after user creation.. "${{ steps.mongodb_user.outputs.USER_OUTPUT }}"
+          echo "Result after user creation.. ${{ steps.mongodb_user.outputs.USER_OUTPUT }}"
+          echo "The string is: ${{ steps.mongodb_user.outputs.content }}"
+
 
