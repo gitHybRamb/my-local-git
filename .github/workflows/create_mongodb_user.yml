@@ -36,21 +36,21 @@ jobs:
           echo App Name ${{ github.event.inputs.app_name }}
           echo User Name ${{ github.event.inputs.user_name }}
           echo Role Name ${{ github.event.inputs.user_role }}
-          MY_STRING="hello world"
-          echo "::set-output name=content::$MY_STRING"
-          #python -m pip install requests
-          echo "::set-output name=USER_OUTPUT::$(
-          python scripts/mongodb_atlas/mongodb_create_user.py \
-          --app_name ${{ github.event.inputs.app_name }} \
-          --db_name ${{ github.event.inputs.db_name }} \
-          --env_name ${{ github.event.inputs.env_name }} \
-          --user_name ${{ github.event.inputs.user_name }} \
-          --user_password ${{ github.event.inputs.user_password }} \
-          --user_role ${{ github.event.inputs.user_role }} 
-          )"
+          MY_STRING=$(python <<EOF
+           scripts/mongodb_atlas/mongodb_create_user.py 
+           --app_name ${{ github.event.inputs.app_name }} 
+           --db_name ${{ github.event.inputs.db_name }} 
+           --env_name ${{ github.event.inputs.env_name }} 
+           --user_name ${{ github.event.inputs.user_name }} 
+           --user_password ${{ github.event.inputs.user_password }} 
+           --user_role ${{ github.event.inputs.user_role }} 
+          EOF
+          )
+          echo "MY_STRING<<EOF" >> $GITHUB_ENV
+          echo "$MY_STRING" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
       - name: Display result
         run: |
-          echo "Result after user creation.. ${{ steps.mongodb_user.outputs.USER_OUTPUT }}"
-          echo "The string is: ${{ steps.mongodb_user.outputs.content }}"
+          echo "The string is: ${{ env.MY_STRING }}"
 
 
