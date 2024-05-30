@@ -31,17 +31,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Create MongoDB User Workflow
-        run: |
+        id: mongodb_user
+        run: >-
           echo App Name ${{ github.event.inputs.app_name }}
           echo User Name ${{ github.event.inputs.user_name }}
           echo Role Name ${{ github.event.inputs.user_role }}
           #python -m pip install requests
+          echo "::set-output name=USER_OUTPUT::$(
           python scripts/mongodb_atlas/mongodb_create_user.py \
-          --app_name "${{ github.event.inputs.app_name }}" \
-          --db_name "${{ github.event.inputs.db_name }}" \
-          --env_name "${{ github.event.inputs.env_name }}" \
-          --user_name "${{ github.event.inputs.user_name }}" \
-          --user_password "${{ github.event.inputs.user_password }}" \
-          --user_role "${{ github.event.inputs.user_role }}"
-          echo User created..
+          --app_name ${{ github.event.inputs.app_name }} \
+          --db_name ${{ github.event.inputs.db_name }} \
+          --env_name ${{ github.event.inputs.env_name }} \
+          --user_name ${{ github.event.inputs.user_name }} \
+          --user_password ${{ github.event.inputs.user_password }} \
+          --user_role ${{ github.event.inputs.user_role }} 
+          )"
+          echo User created.. "${{ steps.mongodb_user.outputs.USER_OUTPUT }}"
 
