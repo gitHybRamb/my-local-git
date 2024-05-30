@@ -54,7 +54,7 @@ jobs:
           echo "The string is: ${{ env.MY_STRING }}"
   test_strings:
     name: test strings
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: create string
         run: |
