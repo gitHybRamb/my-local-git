@@ -5,6 +5,7 @@ import requests
 import os,sys
 import time
 import uuid
+from requests.auth import HTTPDigestAuth
 
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s][%(funcName)s] %(message)s")
 
@@ -21,12 +22,70 @@ class MongodbUser:
         self.atlas_pub_key = os.environ["TF_VAR_mongodb_atlas_api_pub_key"]
         self.atlas_pri_key = os.environ["TF_VAR_mongodb_atlas_api_pri_key"]
         self.atlas_org_id = os.environ["TF_VAR_mongodb_atlas_org_id"]
+        self.atlas_main_url = "https://cloud.mongodb.com/api/atlas/v2"
+        self.headers =  {"Content-Type":"application/json", "Accept":"application/vnd.atlas.2023-02-01+json"}
+        self.project_name = f"mng-{self.app_name}-{self.env_name}-project"
+        self.cluster_name = f"mng-{self.app_name}-{self.env_name}-cluster"
+        self.groupId = ''
+
 
     def create_user(self):
         """create_user"""
         logging.info(f"Create user module..")
-        logging.info(f"User Name: {self.user_name} .. created")
-        logging.info(f"Pub key: {self.atlas_pub_key} ")
+        logging.info(f"User Name: {self.user_name}")
+
+        atlas_url = self.atlas_main_url + "/groups"
+        response = requests.get(atlas_url, auth=HTTPDigestAuth(self.atlas_pub_key, self.atlas_pri_key) , headers=self.headers )
+        r = response.content.decode("utf-8")
+        logging.info(f"Getting project id")
+        data = json.loads(r)
+        projects = data.get('results', [])
+        for rec in projects:
+            if rec.get('name', '') == self.project_name:
+                print(rec)
+                self.groupId = rec.get('id', '')
+                print('Project name:', rec.get('name', ''))
+                print('Group ID: ', rec.get('id', ''))
+
+        #### Create user
+        #https://cloud.mongodb.com/api/atlas/v2/groups/{groupId}/databaseUsers
+        atlas_url = f"{self.atlas_main_url}/groups/{self.groupId}/databaseUsers"
+        if self.user_role == "read":
+            roles = [
+                {
+                    "databaseName": self.db_name,
+                    "roleName": "read"
+                },
+                {
+                    "databaseName": "admin",
+                    "roleName": "clusterMonitor"
+                }
+            ]
+        elif self.user_role == "readWrite":
+            roles = [
+                {
+                    "databaseName": self.db_name,
+                    "roleName": "readWrite"
+                }
+            ]
+
+        payload = {
+            "databaseName": "admin",
+            "groupId": self.groupId,
+            "password": self.user_password,
+            "roles": roles,
+            "scopes": [
+                {
+                "name": self.cluster_name,
+                "type": "CLUSTER"
+                }
+            ],
+            "username": self.user_name
+        }
+        response = requests.post(atlas_url, auth=HTTPDigestAuth(self.atlas_pub_key, self.atlas_pri_key) , headers=self.headers, json=payload )
+        logging.info(f"User created with responce.. {response.json()}")
+
+
 
 def get_args():
     parser = argparse.ArgumentParser(description="MongoDB Atlas User Creation Workflow")
