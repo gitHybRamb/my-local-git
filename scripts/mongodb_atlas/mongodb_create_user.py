@@ -8,6 +8,7 @@ import uuid
 
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s][%(funcName)s] %(message)s")
 
+
 class MongodbUser:
     def __init__(self, env):
         """Initialize Class"""
@@ -17,12 +18,15 @@ class MongodbUser:
         self.user_name = env.user_name
         self.user_password = env.user_password
         self.user_role = env.user_role
+        self.atlas_pub_key = os.environ["TF_VAR_mongodb_atlas_api_pub_key"]
+        self.atlas_pri_key = os.environ["TF_VAR_mongodb_atlas_api_pri_key"]
+        self.atlas_org_id = os.environ["TF_VAR_mongodb_atlas_org_id"]
 
     def create_user(self):
         """create_user"""
-        print("Create user module...")
-        print("User name", self.user_name)
+        logging.info(f"Create user module..")
         logging.info(f"User Name: {self.user_name} .. created")
+        logging.info(f"Pub key: {self.atlas_pub_key} ")
 
 def get_args():
     parser = argparse.ArgumentParser(description="MongoDB Atlas User Creation Workflow")
