@@ -9,7 +9,6 @@ from requests.auth import HTTPDigestAuth
 
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s][%(funcName)s] %(message)s")
 
-
 class MongodbUser:
     def __init__(self, env):
         """Initialize Class"""
@@ -28,7 +27,6 @@ class MongodbUser:
         self.cluster_name = f"mng-{self.app_name}-{self.env_name}-cluster"
         self.groupId = ''
 
-
     def create_user(self):
         """create_user"""
         logging.info(f"Create user module..")
@@ -42,10 +40,10 @@ class MongodbUser:
         projects = data.get('results', [])
         for rec in projects:
             if rec.get('name', '') == self.project_name:
-                print(rec)
+                #print(rec)
                 self.groupId = rec.get('id', '')
-                print('Project name:', rec.get('name', ''))
-                print('Group ID: ', rec.get('id', ''))
+                #print('Project name:', rec.get('name', ''))
+                #print('Group ID: ', rec.get('id', ''))
 
         #### Create user
         #https://cloud.mongodb.com/api/atlas/v2/groups/{groupId}/databaseUsers
@@ -83,9 +81,7 @@ class MongodbUser:
             "username": self.user_name
         }
         response = requests.post(atlas_url, auth=HTTPDigestAuth(self.atlas_pub_key, self.atlas_pri_key) , headers=self.headers, json=payload )
-        logging.info(f"User created with responce.. {response.json()}")
-
-
+        logging.info(f"User created with response.. {response.json()}")
 
 def get_args():
     parser = argparse.ArgumentParser(description="MongoDB Atlas User Creation Workflow")
@@ -98,11 +94,9 @@ def get_args():
     args = parser.parse_args()
     return args
 
-
 def set_output(msg):
     with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
         print(f'{msg}', file=fh)
-
 
 def main():
     args = get_args()
